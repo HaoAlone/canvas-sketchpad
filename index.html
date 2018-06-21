@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+	<style>
+		*{
+			margin:0
+		}
+		#xxx {
+			background:red
+		}
+		#actions {
+			position:fixed;
+			left:0;
+			bottom:0;
+			border-radius:5px
+		}
+		#actions .brush {
+			display: none;
+		}
+		#actions.t .brush {
+			display: inline-block;
+		}
+		#actions.t .eraser {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+<canvas id='xxx' width='300px'height='300px'>
+
+</canvas>
+<div class="actions" id="actions">
+	<button class="eraser">橡皮擦</button>
+	<button class="brush">画笔</button>
+</div>
+
+<script>
+	var canvas = document.getElementById('xxx')
+	var eraserBtn = document.getElementsByTagName('button')[0]
+	var brushBtn = document.getElementsByTagName('button')[1]
+	var actions = document.getElementById('actions')
+	var context = canvas.getContext('2d')
+	//橡皮擦
+	var eraser = false
+
+	// canvas保持和窗口一样大
+	autoResize(canvas)
+	//鼠标事件，点击，拖拽，松开
+	listenMouae(canvas)
+	//点击button，启动橡皮擦
+	eraserBtn.onclick = function(){
+		eraser = true
+		actions.className = 'actions t'
+	}
+	brushBtn.onclick = function () {
+		eraser = false
+		actions.className = 'actions '
+
+	}
+
+	function listenMouae(canvas) {
+		var drawing = false
+		var lastPoint = {}
+		canvas.onmousedown = function(e){
+			drawing = true
+			var x = e.clientX
+			var y =e.clientY
+			if (eraser){
+				context.clearRect(x-5, y-5, 10,10)
+			}else{
+				drawCircle(x,y,1)
+				lastPoint = {'x':x,'y':y}
+			}
+		}
+		canvas.onmousemove = function(e){
+			var x = e.clientX
+			var y =e.clientY
+			if (drawing){
+				if (eraser){
+					context.clearRect(x-5, y-5, 10,10)
+				}else {
+					drawCircle(x,y,1)
+					newPoint = {'x':x,'y':y}
+					drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+					lastPoint = newPoint
+				}
+			}
+		}
+		canvas.onmouseup = function(){
+			drawing = false
+		}
+		//画圆
+		function drawCircle(x,y,radius){
+			context.beginPath()
+			context.arc(x,y,radius,0,Math.PI*2)
+			context.fill()
+		}
+		//连线
+		function drawLine(x1,y1,x2,y2){
+			context.beginPath()
+			context.moveTo(x1,y1)
+			context.lineWidth = 5
+			context.lineTo(x2,y2)
+			context.stroke()
+			context.closePath()
+		}
+	}
+
+	function autoResize(canvas){
+		setSize()
+		window.onresizing = function(){
+			setSize()
+		}
+		function setSize() {
+			var pageWidth = document.documentElement.clientWidth
+			var pageHeight = document.documentElement.clientHeight
+			canvas.width = pageWidth
+			canvas.height = pageHeight
+		}
+	}
+
+</script>
+</body>
+</html>
