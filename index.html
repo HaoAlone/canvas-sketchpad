@@ -5,10 +5,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0,
 user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
+	<script src="//at.alicdn.com/t/font_716101_rdgog6ofzr9.js"></script>
 	<title>canvas</title>
 	<style>
 		*{
-			margin:0
+			margin:0;
+			padding: 0;
+		}
+		ul,ol {
+			list-style: none;
 		}
 		.icon {
 			width: 1em; height: 1em;
@@ -36,7 +41,31 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 			fill: red;
 			transform: scale(1.2);
 		}
-
+		/*
+			颜色`
+		*/
+		ol {
+			position: fixed;
+			top: 50px;
+			left: 28px;
+			/*border: 1px solid black;*/
+		}
+		ol > li {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			margin: 15px 0;
+			box-shadow: 0 0 2px 4px rgba(0,0,0,0.25);
+		}
+		ol > li.green {
+			background: green;
+		}
+		ol > li.red {
+			background: red;
+		}
+		ol > li.yellow {
+			background: yellow;
+		}
 	</style>
 </head>
 <body>
@@ -51,12 +80,18 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 		<use xlink:href="#icon-xiangpica"></use>
 	</svg>
 </div>
+<ol>
+	<li id="green" class="green"></li>
+	<li id="yellow" class="yellow"></li>
+	<li id="red" class="red"></li>
+</ol>
 
 <script>
 	var canvas = document.getElementById('xxx')
 	var context = canvas.getContext('2d')
 	var pen = document.getElementById('pen')
 	var brush = document.getElementById('brush')
+	var lis = document.getElementsByTagName('li')
 	//橡皮擦
 	var eraser = false
 
@@ -74,6 +109,17 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 		eraser = true
 		brush.classList.add('active')
 		pen.classList.remove('active')
+	}
+	// 点击换色
+	lis[0].onclick = function () {
+		// context.fillStyle = green;
+		context.strokeStyle = 'green';
+	}
+	lis[1].onclick = function () {
+		context.strokeStyle = 'yellow';
+	}
+	lis[2].onclick = function () {
+		context.strokeStyle = 'red';
 	}
 
 
@@ -173,6 +219,6 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 	}
 
 </script>
-<script src="//at.alicdn.com/t/font_716101_rdgog6ofzr9.js"></script>
+
 </body>
 </html>
