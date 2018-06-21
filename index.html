@@ -16,7 +16,11 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 			list-style: none;
 		}
 		body {
+			/*解决手机端上下滚动的bug*/
 			overflow: hidden;
+			position: fixed;
+			top:0;
+			left: 0;
 		}
 		.icon {
 			width: 1em; height: 1em;
