@@ -10,24 +10,33 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 		*{
 			margin:0
 		}
+		.icon {
+			width: 1em; height: 1em;
+			vertical-align: -0.15em;
+			fill: currentColor;
+			overflow: hidden;
+		}
 		#xxx {
-			background:red
+			/*background:red*/
 		}
 		#actions {
 			position:fixed;
 			left:0;
-			bottom:0;
-			border-radius:5px
+			top:0;
+			border-radius:5px;
+			padding: 20px;
 		}
-		#actions .brush {
-			display: none;
+		#actions svg {
+			width: 1.5em;
+			height: 1.5em;
+			margin: 0 10px;
+			transition: all 0.3s;
 		}
-		#actions.t .brush {
-			display: inline-block;
+		#actions svg.active {
+			fill: red;
+			transform: scale(1.2);
 		}
-		#actions.t .eraser {
-			display: none;
-		}
+
 	</style>
 </head>
 <body>
@@ -35,16 +44,19 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 
 </canvas>
 <div class="actions" id="actions">
-	<button class="eraser">橡皮擦</button>
-	<button class="brush">画笔</button>
+	<svg id="pen" class="active icon" aria-hidden="true">
+		<use xlink:href="#icon-brush"></use>
+	</svg>
+	<svg id="brush" class="icon" aria-hidden="true">
+		<use xlink:href="#icon-xiangpica"></use>
+	</svg>
 </div>
 
 <script>
 	var canvas = document.getElementById('xxx')
-	var eraserBtn = document.getElementsByTagName('button')[0]
-	var brushBtn = document.getElementsByTagName('button')[1]
-	var actions = document.getElementById('actions')
 	var context = canvas.getContext('2d')
+	var pen = document.getElementById('pen')
+	var brush = document.getElementById('brush')
 	//橡皮擦
 	var eraser = false
 
@@ -53,15 +65,17 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 	//鼠标事件，点击，拖拽，松开
 	listenUser(canvas)
 	//点击button，启动橡皮擦
-	eraserBtn.onclick = function(){
-		eraser = true
-		actions.className = 'actions t'
-	}
-	brushBtn.onclick = function () {
+	pen.onclick = function () {
 		eraser = false
-		actions.className = 'actions '
-
+		pen.classList.add('active')
+		brush.classList.remove('active')
 	}
+	brush.onclick = function () {
+		eraser = true
+		brush.classList.add('active')
+		pen.classList.remove('active')
+	}
+
 
 	function listenUser(canvas) {
 		var drawing = false
@@ -159,5 +173,6 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 	}
 
 </script>
+<script src="//at.alicdn.com/t/font_716101_rdgog6ofzr9.js"></script>
 </body>
 </html>
