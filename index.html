@@ -15,6 +15,9 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 		ul,ol {
 			list-style: none;
 		}
+		body {
+			overflow: hidden;
+		}
 		.icon {
 			width: 1em; height: 1em;
 			vertical-align: -0.15em;
@@ -55,7 +58,8 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 			height: 20px;
 			border-radius: 50%;
 			margin: 15px 0;
-			box-shadow: 0 0 2px 4px rgba(0,0,0,0.25);
+			box-shadow: 0 0 2px 1px rgba(0,0,0,0.25);
+			transition: all 0.3s;
 		}
 		ol > li.green {
 			background: green;
@@ -65,6 +69,10 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 		}
 		ol > li.yellow {
 			background: yellow;
+		}
+		ol > li.active {
+			box-shadow: 0 0 2px 3px rgba(0,0,0,0.75) ;
+			transform: scale(1.2);
 		}
 	</style>
 </head>
@@ -81,7 +89,7 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 	</svg>
 </div>
 <ol>
-	<li id="green" class="green"></li>
+	<li id="green" class="active green"></li>
 	<li id="yellow" class="yellow"></li>
 	<li id="red" class="red"></li>
 </ol>
@@ -114,12 +122,21 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 	lis[0].onclick = function () {
 		// context.fillStyle = green;
 		context.strokeStyle = 'green';
+		lis[0].classList.add('active')
+		lis[1].classList.remove('active')
+		lis[2].classList.remove('active')
 	}
 	lis[1].onclick = function () {
 		context.strokeStyle = 'yellow';
+		lis[0].classList.remove('active')
+		lis[1].classList.add('active')
+		lis[2].classList.remove('active')
 	}
 	lis[2].onclick = function () {
 		context.strokeStyle = 'red';
+		lis[0].classList.remove('active')
+		lis[1].classList.remove('active')
+		lis[2].classList.add('active')
 	}
 
 
