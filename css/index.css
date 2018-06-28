@@ -1,0 +1,95 @@
+*{
+  margin:0;
+  padding: 0;
+}
+ul,ol {
+  list-style: none;
+}
+body {
+  /*解决手机端上下滚动的bug*/
+  overflow: hidden;
+  position: fixed;
+  top:0;
+  left: 0;
+}
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+#xxx {
+  /*background:red*/
+}
+#actions {
+  position:fixed;
+  left:0;
+  top:0;
+  border-radius:5px;
+  padding: 20px;
+}
+#actions svg {
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0 10px;
+  transition: all 0.3s;
+}
+#actions svg.active {
+  fill: red;
+  transform: scale(1.2);
+}
+/*
+  颜色`
+*/
+ol {
+  position: fixed;
+  top: 50px;
+  left: 28px;
+  /*border: 1px solid black;*/
+}
+ol > li {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: 15px 0;
+  box-shadow: 0 0 2px 1px rgba(0,0,0,0.25);
+  transition: all 0.3s;
+}
+ol > li.green {
+  background: green;
+}
+ol > li.red {
+  background: red;
+}
+ol > li.yellow {
+  background: yellow;
+}
+ol > li.active {
+  box-shadow: 0 0 2px 3px rgba(0,0,0,0.75) ;
+  transform: scale(1.2);
+}
+/*
+  画笔粗细
+*/
+ul {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  /*border:1px solid red;*/
+}
+ul > li {
+
+}
+ul > li:last-child {
+  margin-top: 20px;
+}
+ul span {
+  display: inline-block;
+  width: 60px;
+  height: 4px;
+  background: #000;
+  /*border: 1px solid red;*/
+}
+ul span.wide {
+  height: 8px;
+}

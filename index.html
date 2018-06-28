@@ -5,80 +5,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0,
 user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
-	<script src="//at.alicdn.com/t/font_716101_rdgog6ofzr9.js"></script>
+	<script src="//at.alicdn.com/t/font_716101_88groz2hsds.js"></script>
 	<title>canvas</title>
-	<style>
-		*{
-			margin:0;
-			padding: 0;
-		}
-		ul,ol {
-			list-style: none;
-		}
-		body {
-			/*解决手机端上下滚动的bug*/
-			overflow: hidden;
-			position: fixed;
-			top:0;
-			left: 0;
-		}
-		.icon {
-			width: 1em; height: 1em;
-			vertical-align: -0.15em;
-			fill: currentColor;
-			overflow: hidden;
-		}
-		#xxx {
-			/*background:red*/
-		}
-		#actions {
-			position:fixed;
-			left:0;
-			top:0;
-			border-radius:5px;
-			padding: 20px;
-		}
-		#actions svg {
-			width: 1.5em;
-			height: 1.5em;
-			margin: 0 10px;
-			transition: all 0.3s;
-		}
-		#actions svg.active {
-			fill: red;
-			transform: scale(1.2);
-		}
-		/*
-			颜色`
-		*/
-		ol {
-			position: fixed;
-			top: 50px;
-			left: 28px;
-			/*border: 1px solid black;*/
-		}
-		ol > li {
-			width: 20px;
-			height: 20px;
-			border-radius: 50%;
-			margin: 15px 0;
-			box-shadow: 0 0 2px 1px rgba(0,0,0,0.25);
-			transition: all 0.3s;
-		}
-		ol > li.green {
-			background: green;
-		}
-		ol > li.red {
-			background: red;
-		}
-		ol > li.yellow {
-			background: yellow;
-		}
-		ol > li.active {
-			box-shadow: 0 0 2px 3px rgba(0,0,0,0.75) ;
-			transform: scale(1.2);
-		}
-	</style>
+	<link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 <canvas id='xxx' width='300px'height='300px'>
@@ -91,155 +20,23 @@ user-scalable=no, maximum-scale=1.0, minimum-scale = 1.0">
 	<svg id="brush" class="icon" aria-hidden="true">
 		<use xlink:href="#icon-xiangpica"></use>
 	</svg>
+	<svg id="clear" class="icon" aria-hidden="true">
+		<use xlink:href="#icon-custom-clear"></use>
+	</svg>
+	<svg id="download" class="icon" aria-hidden="true">
+		<use xlink:href="#icon-download"></use>
+	</svg>
 </div>
 <ol>
 	<li id="green" class="active green"></li>
 	<li id="yellow" class="yellow"></li>
 	<li id="red" class="red"></li>
 </ol>
-
-<script>
-	var canvas = document.getElementById('xxx')
-	var context = canvas.getContext('2d')
-	var pen = document.getElementById('pen')
-	var brush = document.getElementById('brush')
-	var lis = document.getElementsByTagName('li')
-	//橡皮擦
-	var eraser = false
-
-	// canvas保持和窗口一样大
-	autoResize(canvas)
-	//鼠标事件，点击，拖拽，松开
-	listenUser(canvas)
-	//点击button，启动橡皮擦
-	pen.onclick = function () {
-		eraser = false
-		pen.classList.add('active')
-		brush.classList.remove('active')
-	}
-	brush.onclick = function () {
-		eraser = true
-		brush.classList.add('active')
-		pen.classList.remove('active')
-	}
-	// 点击换色
-	lis[0].onclick = function () {
-		// context.fillStyle = green;
-		context.strokeStyle = 'green';
-		lis[0].classList.add('active')
-		lis[1].classList.remove('active')
-		lis[2].classList.remove('active')
-	}
-	lis[1].onclick = function () {
-		context.strokeStyle = 'yellow';
-		lis[0].classList.remove('active')
-		lis[1].classList.add('active')
-		lis[2].classList.remove('active')
-	}
-	lis[2].onclick = function () {
-		context.strokeStyle = 'red';
-		lis[0].classList.remove('active')
-		lis[1].classList.remove('active')
-		lis[2].classList.add('active')
-	}
-
-
-	function listenUser(canvas) {
-		var drawing = false
-		var lastPoint = {}
-		if (document.body.ontouchstart === undefined){
-		//	pc
-			canvas.onmousedown = function(e){
-				drawing = true
-				var x = e.clientX
-				var y =e.clientY
-				if (eraser){
-					context.clearRect(x-5, y-5, 10,10)
-				}else{
-					drawCircle(x,y,1)
-					lastPoint = {'x':x,'y':y}
-				}
-			}
-			canvas.onmousemove = function(e){
-				var x = e.clientX
-				var y =e.clientY
-				if (drawing){
-					if (eraser){
-						context.clearRect(x-5, y-5, 10,10)
-					}else {
-						drawCircle(x,y,1)
-						newPoint = {'x':x,'y':y}
-						drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
-						lastPoint = newPoint
-					}
-				}
-			}
-			canvas.onmouseup = function(){
-				drawing = false
-			}
-		}else{
-		//	移动端
-			canvas.ontouchstart = function (e) {
-				drawing = true
-				var x = e.touches[0].clientX
-				var y =e.touches[0].clientY
-				if (eraser){
-					context.clearRect(x-5, y-5, 10,10)
-				}else{
-					drawCircle(x,y,1)
-					lastPoint = {'x':x,'y':y}
-				}
-			}
-			canvas.ontouchmove = function (e) {
-				var x = e.touches[0].clientX
-				var y =e.touches[0].clientY
-				if (drawing){
-					if (eraser){
-						context.clearRect(x-5, y-5, 10,10)
-					}else {
-						drawCircle(x,y,1)
-						newPoint = {'x':x,'y':y}
-						drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
-						lastPoint = newPoint
-					}
-				}
-			}
-			canvas.ontouchend = function () {
-				drawing = false
-			}
-		}
-
-		//画圆
-		function drawCircle(x,y,radius){
-			context.beginPath()
-			context.arc(x,y,radius,0,Math.PI*2)
-			context.fill()
-		}
-		//连线
-		function drawLine(x1,y1,x2,y2){
-			context.beginPath()
-			context.moveTo(x1,y1)
-			context.lineWidth = 5
-			context.lineTo(x2,y2)
-			context.stroke()
-			context.closePath()
-		}
-	}
-
-	function autoResize(canvas){
-		setSize()
-		window.onresizing = function(){
-			setSize()
-		}
-		function setSize() {
-			var pageWidth = document.documentElement.clientWidth
-			var pageHeight = document.documentElement.clientHeight
-			canvas.width = pageWidth
-			canvas.height = pageHeight
-		}
-	}
-
-</script>
+<ul>
+	<li>细：<span id="thin" class="thin"></span></li>
+	<li>粗：<span id="wide" class="wide"></span></li>
+</ul>
+<script src="js/index.js"></script>
 
 </body>
 </html>
